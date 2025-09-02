@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🤖 AI Trading System - CBOE + MT5 Integration
 
 Sistema completo di trading AI con analisi real-time, supporti/resistenze AI e dashboard professionale.
@@ -38,3 +39,6 @@ this.wsUrl = 'wss://TUO-PROGETTO-RAILWAY.up.railway.app';
 ```
 
 Commit e push su GitHub. Vercel si aggiornerà automaticamente!
+=======
+# AICASHR-evolution
+>>>>>>> c6e66d9fb795753f258942d954056255fffc02ca
