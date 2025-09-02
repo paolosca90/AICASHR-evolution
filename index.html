@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema AI Trading - CBOE + MT5 Integration</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="header-title">🤖 Sistema AI Trading - CBOE + MT5</h1>
+                    <div class="status-indicators">
+                        <div class="status-indicator" id="connectionStatus">
+                            <span class="status-dot" id="connectionDot"></span>
+                            <span id="connectionText">Disconnesso</span>
+                        </div>
+                        <div class="status-indicator" id="systemHealth">
+                            <span class="status-dot status-dot--success"></span>
+                            <span>Sistema: Ottimale</span>
+                        </div>
+                        <div class="status-indicator" id="dataLatency">
+                            <span class="status-dot status-dot--success"></span>
+                            <span>Latenza: --ms</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-summary">
+                    <div class="account-item">
+                        <span class="account-label">Balance</span>
+                        <span class="account-value" id="accountBalance">€10,000.00</span>
+                    </div>
+                    <div class="account-item">
+                        <span class="account-label">Equity</span>
+                        <span class="account-value" id="accountEquity">€10,000.00</span>
+                    </div>
+                    <div class="account-item">
+                        <span class="account-label">P&L</span>
+                        <span class="account-value account-value--positive" id="accountPnl">+€0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-tabs">
+                <button class="nav-tab nav-tab--active" data-tab="overview">Panoramica</button>
+                <button class="nav-tab" data-tab="analysis">Analisi AI</button>
+                <button class="nav-tab" data-tab="signals">Segnali</button>
+                <button class="nav-tab" data-tab="mt5">MT5 Status</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="main">
+        <div class="container">
+            <div class="dashboard">
+                
+                <!-- Left Sidebar -->
+                <aside class="sidebar-left">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📊 Market Data</h2>
+                        </div>
+                        <div class="market-overview">
+                            <div class="market-card" id="spxCard">
+                                <div class="symbol-header">
+                                    <span class="symbol-name">SPX</span>
+                                    <span class="market-status">🟢 OPEN</span>
+                                </div>
+                                <div class="price-display">
+                                    <div class="current-price" id="spxPrice">5,547.75</div>
+                                    <div class="price-change price-change--positive" id="spxChange">+12.45 (+0.22%)</div>
+                                </div>
+                                <div class="market-details">
+                                    <div class="detail-item">
+                                        <span>Volume:</span>
+                                        <span id="spxVolume">4.2M</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span>VIX:</span>
+                                        <span id="spxVix">18.7</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="market-card" id="ndxCard">
+                                <div class="symbol-header">
+                                    <span class="symbol-name">NDX</span>
+                                    <span class="market-status">🟢 OPEN</span>
+                                </div>
+                                <div class="price-display">
+                                    <div class="current-price" id="ndxPrice">19,847.25</div>
+                                    <div class="price-change price-change--positive" id="ndxChange">+28.90 (+0.15%)</div>
+                                </div>
+                                <div class="market-details">
+                                    <div class="detail-item">
+                                        <span>Volume:</span>
+                                        <span id="ndxVolume">1.8M</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span>VIX:</span>
+                                        <span id="ndxVix">22.8</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🤖 AI Levels</h2>
+                        </div>
+                        <div class="ai-levels" id="aiLevels">
+                            <div class="level-group">
+                                <div class="level-group-title level-group-title--support">🟢 Supporti</div>
+                                <div id="supportLevels">
+                                    <div class="level-item">
+                                        <div>
+                                            <div class="level-price">5,485.20</div>
+                                            <div class="level-source">Volume Profile + ML</div>
+                                        </div>
+                                        <div class="level-confidence">
+                                            <span>92%</span>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill confidence-fill--high" style="width: 92%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="level-group">
+                                <div class="level-group-title level-group-title--resistance">🔴 Resistenze</div>
+                                <div id="resistanceLevels">
+                                    <div class="level-item">
+                                        <div>
+                                            <div class="level-price">5,585.40</div>
+                                            <div class="level-source">Max Pain + Smart Money</div>
+                                        </div>
+                                        <div class="level-confidence">
+                                            <span>94%</span>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill confidence-fill--high" style="width: 94%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center Content -->
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📈 Price Chart</h2>
+                            <div class="chart-controls">
+                                <select id="timeframeSelect">
+                                    <option value="1m">1M</option>
+                                    <option value="5m">5M</option>
+                                    <option value="15m" selected>15M</option>
+                                    <option value="1h">1H</option>
+                                    <option value="4h">4H</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">⚡ Trading Signals</h2>
+                            <span class="update-time" id="signalsUpdate">Ultimo aggiornamento: --:--</span>
+                        </div>
+                        <div class="signals-feed" id="signalsFeed">
+                            <div class="signal-item signal-item--buy">
+                                <div class="signal-header">
+                                    <div class="signal-type signal-type--buy">🟢 BUY US500</div>
+                                    <div class="signal-confidence">Confidence: 89%</div>
+                                </div>
+                                <div class="signal-details">
+                                    Entry: 5,542.75 | SL: 5,530.20 | TP: 5,560.80<br>
+                                    <small>AI Support Level @ 5,540.20</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <aside class="sidebar-right">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔌 MT5 Status</h2>
+                        </div>
+                        <div class="mt5-status">
+                            <div class="connection-status">
+                                <span class="status-dot status-dot--success"></span>
+                                <span>Connesso: Railway-Demo</span>
+                            </div>
+                            
+                            <div class="account-info">
+                                <div class="info-item">
+                                    <span>Account:</span>
+                                    <span id="mt5Account">12345678</span>
+                                </div>
+                                <div class="info-item">
+                                    <span>Balance:</span>
+                                    <span id="mt5Balance">€10,000.00</span>
+                                </div>
+                                <div class="info-item">
+                                    <span>Equity:</span>
+                                    <span id="mt5Equity">€10,000.00</span>
+                                </div>
+                                <div class="info-item">
+                                    <span>Margin:</span>
+                                    <span id="mt5Margin">€0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">💼 Posizioni Attive</h2>
+                        </div>
+                        <div class="positions-list" id="positionsList">
+                            <div class="empty-state">
+                                <p>Nessuna posizione aperta</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">⚙️ System Health</h2>
+                        </div>
+                        <div class="system-metrics">
+                            <div class="metric-item">
+                                <span>Uptime:</span>
+                                <span class="text-success" id="systemUptime">99.7%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Accuracy:</span>
+                                <span class="text-info" id="systemAccuracy">84.7%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Memory:</span>
+                                <span id="systemMemory">45%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>CPU:</span>
+                                <span id="systemCpu">12%</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

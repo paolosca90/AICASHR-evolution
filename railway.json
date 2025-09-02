@@ -1,0 +1,13 @@
+# Railway deployment configuration for AI Trading System
+
+# railway.json - Railway service configuration
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "python ai_trading_backend.py",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 300
+  }
+}
